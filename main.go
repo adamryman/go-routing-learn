@@ -29,7 +29,7 @@ func timeHandlerClosure(format string) http.Handler {
 		tm := time.Now().Format(format)
 		w.Write([]byte("The time is " + tm + " | CLOSURE!"))
 	}
-	return http.HandleFunc(fn)
+	return http.HandlerFunc(fn)
 }
 
 func main() {
