@@ -29,7 +29,7 @@ func main() {
 
 	//reuse!
 	th3339 := &timeHandler{format: time.RFC3339}
-	mux.Handle("time/rfc3339", th3339)
+	mux.Handle("/time/rfc3339", th3339)
 	log.Println("Listening...")
 	http.ListenAndServe(":3000", mux)
 }
