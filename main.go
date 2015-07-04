@@ -23,6 +23,15 @@ func timeHandlerOneOff(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("The time is: " + tm))
 }
 
+//One off that we can pass things to!
+func timeHandlerClosure(format string) http.Handler {
+	fn := func(w http.ResponseWriter, r *http.Request) {
+		tm := time.Now().Format(format)
+		w.Write([]byte("The time is " + tm + " | CLOSURE!"))
+	}
+	return http.HandleFunc(fn)
+}
+
 func main() {
 	mux := http.NewServeMux()
 
@@ -43,6 +52,10 @@ func main() {
 
 	//even simpler
 	mux.HandleFunc("/time/simpler", timeHandlerOneOff)
+
+	//passing through closure
+	thClosure := timeHandlerClosure(time.RFC1123)
+	mux.Handle("/time/closure", thClosure)
 
 	log.Println("Listening...")
 	http.ListenAndServe(":3000", mux)
