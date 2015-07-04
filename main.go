@@ -32,6 +32,14 @@ func timeHandlerClosure(format string) http.Handler {
 	return http.HandlerFunc(fn)
 }
 
+//different closure
+func timeHandlerDifferentClosure(format string) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		tm := time.Now().Format(format)
+		w.Write([]byte("The time is: " + tm))
+	})
+}
+
 func main() {
 	mux := http.NewServeMux()
 
@@ -56,6 +64,9 @@ func main() {
 	//passing through closure
 	thClosure := timeHandlerClosure(time.RFC1123)
 	mux.Handle("/time/closure", thClosure)
+
+	thDifferent := timeHandlerDifferentClosure(time.RFC1123)
+	mux.Handle("/time/different", thDifferent)
 
 	log.Println("Listening...")
 	http.ListenAndServe(":3000", mux)
