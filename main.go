@@ -17,6 +17,12 @@ func (th *timeHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("The time is: " + tm))
 }
 
+//One off method handler
+func timeHandlerOneOff(w http.ResponseWriter, r *http.Request) {
+	tm := time.Now().Format(time.RFC1123)
+	w.Write([]byte("The time is: " + tm))
+}
+
 func main() {
 	mux := http.NewServeMux()
 
@@ -30,6 +36,11 @@ func main() {
 	//reuse!
 	th3339 := &timeHandler{format: time.RFC3339}
 	mux.Handle("/time/rfc3339", th3339)
+
+	//one off method
+	thOneOff := http.HandlerFunc(timeHandlerOneOff)
+	mux.Handle("/time/oneoff", thOneOff)
+
 	log.Println("Listening...")
 	http.ListenAndServe(":3000", mux)
 }
