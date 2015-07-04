@@ -41,6 +41,9 @@ func main() {
 	thOneOff := http.HandlerFunc(timeHandlerOneOff)
 	mux.Handle("/time/oneoff", thOneOff)
 
+	//even simpler
+	mux.HandleFunc("/time/simpler", timeHandlerOneOff)
+
 	log.Println("Listening...")
 	http.ListenAndServe(":3000", mux)
 }
