@@ -23,6 +23,14 @@ func timeHandlerOneOff(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("The time is: " + tm))
 }
 
+//closure
+func timeHandlerDifferent(format string) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		tm := time.Now().Format(format)
+		w.Write([]byte("The time is: " + tm))
+	})
+}
+
 func main() {
 	mux := http.NewServeMux()
 
@@ -43,6 +51,9 @@ func main() {
 
 	//even simpler
 	mux.HandleFunc("/time/simpler", timeHandlerOneOff)
+
+	thDifferent := timeHandlerDifferent(time.RFC1123)
+	mux.Handle("/time/different", thDifferent)
 
 	log.Println("Listening...")
 	http.ListenAndServe(":3000", mux)
