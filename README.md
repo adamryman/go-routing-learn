@@ -7,3 +7,6 @@
 ./main.go:32: http.HandleFunc(fn) used as value
 ➜  go-routing-learn git:(used_as_value) ✗
 ```
+
+The answer is I returned http.HandleFunc rather than http.HandlerFunc
+Oops
